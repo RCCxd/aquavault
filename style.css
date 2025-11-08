@@ -1,0 +1,214 @@
+﻿/* Estilos globais do projeto Marine Dex / AquaVault */
+:root{
+  --gradient-start: #0B3D91; /* dark blue */
+  --gradient-end: #1E9E9E; /* very dark green */
+  --primary: #2E3ECC;
+}
+/* Global font family: Poppins */
+html, body, button, input, select, textarea { font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif; }
+
+/* Header gradient */
+.app-gradient {
+  background-image: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+}
+
+/* Focus visual mais acessÃ­vel */
+:focus { outline: 3px solid rgba(94,92,222,0.9); outline-offset: 2px; }
+
+/* Utilities (replicar pequenas coisas que estavam inline) */
+.line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.visually-hidden { position:absolute; left:-10000px; top:auto; width:1px; height:1px; overflow:hidden; }
+
+/* Pequenas melhorias de layout para imagens e modais */
+img { max-width: 100%; height: auto; }
+.rounded-xl { border-radius: 0.75rem; }
+
+/* Toast (alert) suave */
+.toast-enter { transform: translateY(-6px); opacity: 0; }
+.toast-show { transform: translateY(0); opacity: 1; transition: transform .2s ease, opacity .2s ease; }
+
+/* Responsividade simples para forms */
+@media (max-width: 640px) {
+  .container { padding-left: 1rem; padding-right: 1rem; }
+}
+
+/* Small reset for body background transition */
+body { -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+
+/* Keep some spacing for main */
+main.container { max-width: 1080px; }
+
+/* ==========================
+   Ocean Animated Background
+   ========================== */
+.ocean-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  /* Deep ocean gradient with gentle motion, matching header gradient */
+  background: radial-gradient(1200px 600px at 70% -10%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 60%),
+              linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+  animation: ocean-shift 18s ease-in-out infinite alternate;
+}
+
+/* Light rays */
+.ocean-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    115deg,
+    rgba(255,255,255,0.08) 0px,
+    rgba(255,255,255,0.08) 2px,
+    rgba(255,255,255,0) 18px,
+    rgba(255,255,255,0) 38px
+  );
+  mix-blend-mode: screen;
+  opacity: .25;
+  transform: translateY(-6%);
+  animation: rays-drift 22s linear infinite;
+}
+
+/* Soft grain/particles */
+.ocean-bg::before {
+  content: "";
+  position: absolute;
+  inset: -20% -10%;
+  background-image: radial-gradient(circle at 20% 30%, rgba(255,255,255,0.035) 0 1px, transparent 1px),
+                    radial-gradient(circle at 80% 60%, rgba(255,255,255,0.03) 0 1px, transparent 1px),
+                    radial-gradient(circle at 50% 80%, rgba(255,255,255,0.02) 0 1px, transparent 1px);
+  background-size: 6px 6px, 7px 7px, 9px 9px;
+  filter: blur(.2px);
+  opacity: .35;
+  animation: particles-float 24s ease-in-out infinite alternate;
+}
+
+/* Bubbles */
+.ocean-bg .bubble {
+  position: absolute;
+  bottom: -10vh;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  border-radius: 9999px;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.5) 45%, rgba(255,255,255,0.1) 60%, rgba(255,255,255,0) 70%);
+  box-shadow: inset 0 0 8px rgba(255,255,255,0.6);
+  opacity: .7;
+  transform: translateX(-50%) scale(1);
+  animation: bubble-rise 12s linear infinite;
+}
+
+/* Vary positions, sizes, speeds, and delays */
+.ocean-bg .bubble:nth-child(1)  { left: 12%; width: 8px;  height: 8px;  animation-duration: 10s; animation-delay: 0s; }
+.ocean-bg .bubble:nth-child(2)  { left: 28%; width: 10px; height: 10px; animation-duration: 12s; animation-delay: 2s; }
+.ocean-bg .bubble:nth-child(3)  { left: 42%; width: 7px;  height: 7px;  animation-duration: 9s;  animation-delay: 1s; }
+.ocean-bg .bubble:nth-child(4)  { left: 55%; width: 11px; height: 11px; animation-duration: 13s; animation-delay: 3s; }
+.ocean-bg .bubble:nth-child(5)  { left: 70%; width: 9px;  height: 9px;  animation-duration: 11s; animation-delay: 1.5s; }
+.ocean-bg .bubble:nth-child(6)  { left: 18%; width: 6px;  height: 6px;  animation-duration: 8s;  animation-delay: .8s; }
+.ocean-bg .bubble:nth-child(7)  { left: 34%; width: 14px; height: 14px; animation-duration: 16s; animation-delay: 2.5s; }
+.ocean-bg .bubble:nth-child(8)  { left: 63%; width: 12px; height: 12px; animation-duration: 14s; animation-delay: 0s; }
+.ocean-bg .bubble:nth-child(9)  { left: 77%; width: 7px;  height: 7px;  animation-duration: 9.5s; animation-delay: 1.2s; }
+.ocean-bg .bubble:nth-child(10) { left: 84%; width: 10px; height: 10px; animation-duration: 12.5s; animation-delay: 3.2s; }
+.ocean-bg .bubble:nth-child(11) { left: 5%;  width: 9px;  height: 9px;  animation-duration: 11.5s; animation-delay: .4s; }
+.ocean-bg .bubble:nth-child(12) { left: 23%; width: 6px;  height: 6px;  animation-duration: 8.5s; animation-delay: 2.8s; }
+.ocean-bg .bubble:nth-child(13) { left: 49%; width: 8px;  height: 8px;  animation-duration: 10.5s; animation-delay: 1.8s; }
+.ocean-bg .bubble:nth-child(14) { left: 66%; width: 15px; height: 15px; animation-duration: 18s; animation-delay: 4s; }
+.ocean-bg .bubble:nth-child(15) { left: 91%; width: 9px;  height: 9px;  animation-duration: 13.5s; animation-delay: .6s; }
+
+/* Keyframes */
+@keyframes ocean-shift {
+  0% { background-position: 0% 0%, 50% 0%; }
+  100% { background-position: 100% 10%, 50% 100%; }
+}
+
+@keyframes rays-drift {
+  0% { transform: translateY(-6%) rotate(0.001deg); }
+  100% { transform: translateY(6%) rotate(0.001deg); }
+}
+
+@keyframes particles-float {
+  0% { transform: translate3d(0, 0, 0); opacity: .28; }
+  100% { transform: translate3d(0, -2%, 0); opacity: .38; }
+}
+
+@keyframes bubble-rise {
+  0% { transform: translate(-50%, 0) scale(0.85); opacity: 0; }
+  10% { opacity: .6; }
+  100% { transform: translate(-50%, -110vh) scale(1.05); opacity: 0; }
+}
+
+
+/* Ensure content sits above background */
+.site-content { position: relative; z-index: 1; }
+
+/* ==========================
+   Translucent Content (Glass)
+   ========================== */
+/* Light mode: soften white backgrounds */
+.site-content .bg-white {
+  background-color: rgba(255, 255, 255, 0.75) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(120%);
+  backdrop-filter: blur(6px) saturate(120%);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+/* Dark mode: target elements that use Tailwind's dark:bg-gray-800 */
+.dark .site-content [class*="dark:bg-gray-800"] {
+  background-color: rgba(31, 41, 55, 0.55) !important; /* gray-800 at 55% */
+  -webkit-backdrop-filter: blur(8px) saturate(130%);
+  backdrop-filter: blur(8px) saturate(130%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* ==========================
+   Hover Zoom for Images
+   ========================== */
+.site-content img.object-cover:not(#siteLogoImg) {
+  transition: transform .35s cubic-bezier(.2,.6,.2,1), filter .35s ease;
+  transform-origin: center center;
+  will-change: transform;
+}
+.site-content img.object-cover:hover:not(#siteLogoImg) {
+  transform: scale(1.15);
+}
+/* Remove scaling on card/link hover so only the image triggers */
+
+/* ==========================
+   Rounded animal photos (allow overflow on hover)
+   ========================== */
+/* Let images overflow the media area when scaled */
+#speciesGrid article > div.relative { overflow: visible; }
+/* Keep images rounded, independent of container */
+#speciesGrid img.object-cover { border-radius: 1rem; position: relative; z-index: 1; }
+/* Elevate hovered card so overflow isn't clipped by neighbors */
+#speciesGrid article { position: relative; }
+#speciesGrid article:hover { z-index: 10; }
+
+/* ==========================
+   Search/Filter Controls: Black Theme
+   ========================== */
+#searchInput,
+#riskFilter,
+#sortSelect {
+  background-color: #000 !important;
+  color: #fff !important;
+  border-color: #000 !important;
+}
+#searchInput::placeholder { color: rgba(255,255,255,0.7); }
+#searchInput:focus,
+#riskFilter:focus,
+#sortSelect:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(46,62,204,0.5);
+}
+
+/* ==========================
+   About Modal Typography (larger)
+   ========================== */
+#aboutModal h2 { font-size: 1.75rem; }
+#aboutContent { font-size: 1.125rem; line-height: 1.75rem; }
+@media (min-width: 768px) {
+  #aboutContent { font-size: 1.25rem; line-height: 1.9rem; }
+}
+
+

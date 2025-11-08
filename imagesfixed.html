@@ -1,0 +1,361 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AQUAVAULT - Espécies Marinhas Brasileiras</title>
+  <link rel="shortcut icon" href="https://raw.githubusercontent.com/RCCxd/imagensvault/main/logo.png" type="image/x-icon">
+  <link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#2E3ECC',
+            ocean: {
+              50: '#f0f9ff',
+              100: '#1E9E9E',
+              500: '#0ea5e9',
+              600: '#0B3D91',
+              700: '#0369a1',
+              800: '#2E3ECC',
+              900: '#0c4a6e',
+            },
+          },
+        },
+      },
+    }
+  </script>
+  <link rel="stylesheet" href="CSS/style.css">
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors min-h-screen">
+  <!-- Ocean animated background -->
+  <div class="ocean-bg" aria-hidden="true">
+    <span class="bubble"></span>
+    <span class="bubble"></span>
+    <span class="bubble"></span>
+    <span class="bubble"></span>
+    <span class="bubble"></span>
+    <span class="bubble"></span>
+    <span class="bubble"></span>
+    <span class="bubble"></span>
+    <span class="bubble"></span>
+    <span class="bubble"></span>
+    <span class="bubble"></span>
+    <span class="bubble"></span>
+    <span class="bubble"></span>
+    <span class="bubble"></span>
+    <span class="bubble"></span>
+  </div>
+
+  <!-- Site content wrapper to keep background behind -->
+  <div class="site-content relative z-10">
+  <!-- Header -->
+  <header class="app-gradient bg-ocean-600 dark:bg-ocean-800 text-white shadow-lg">
+    <div class="container mx-auto px-4 py-6">
+      <div class="flex items-center justify-between">
+        <a href="#main" class="sr-only focus:not-sr-only">Pular para o conteúdo</a>
+        <div class="flex items-center space-x-3">
+          <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center overflow-hidden" aria-hidden="true"><img id="siteLogoImg" src="https://raw.githubusercontent.com/RCCxd/imagensvault/main/logo.png" onerror="this.onerror=null;this.src='images/logo.svg'" alt="AQUAVAULT" class="w-full h-full object-cover" decoding="async" /></div>
+          <div>
+            <h1 class="text-2xl font-bold">AQUAVAULT</h1>
+            <p class="text-ocean-100 text-sm">Espécies Marinhas Brasileiras</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button id="aboutBtn" class="hidden md:inline-flex items-center px-4 py-2 rounded-lg bg-white/20 hover:bg-white/30 text-white border border-white/30 transition-colors" title="Quem somos?" aria-haspopup="dialog">
+            <i class="fas fa-users mr-2"></i>
+            <span>Quem somos?</span>
+          </button>
+          <div class="flex flex-col md:flex-row gap-2">
+            <button id="importBtn" class="bg-white/90 text-ocean-700 px-3 py-2 rounded-lg hover:bg-white transition-colors font-medium flex items-center" title="Importar dados de espécies (JSON)" aria-label="Importar dados">
+              <i class="fas fa-file-import mr-2"></i>
+              <span>Importar Dados</span>
+            </button>
+            <button id="exportBtn" class="bg-white/90 text-ocean-700 px-3 py-2 rounded-lg hover:bg-white transition-colors font-medium flex items-center" title="Exportar dados de espécies (JSON)" aria-label="Exportar dados">
+              <i class="fas fa-file-export mr-2"></i>
+              <span>Exportar Dados</span>
+            </button>
+            <button id="addSpeciesBtn" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-ocean-700 transition-colors font-medium flex items-center" aria-haspopup="dialog" title="Adicionar nova espécie ao catálogo">
+              <i class="fas fa-plus mr-2"></i>
+              <span>Nova Espécie</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Search and Filters -->
+  <main id="main" class="container mx-auto px-4 py-6">
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="md:col-span-2">
+          <label for="searchInput" class="block text-sm font-medium mb-1">Pesquisar espécies</label>
+          <input type="text" id="searchInput" placeholder="Nome popular ou científico" class="w-full px-4 py-3 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white" autocomplete="off" />
+        </div>
+        <div>
+          <label for="riskFilter" class="block text-sm font-medium mb-1">Risco de Extinção</label>
+          <select id="riskFilter" class="w-full px-4 py-3 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+            <option value="">Todos os níveis</option>
+            <option value="Criticamente em Perigo">Criticamente em Perigo</option>
+            <option value="Em Perigo">Em Perigo</option>
+            <option value="Vulnerável">Vulnerável</option>
+            <option value="Quase Ameaçada">Quase Ameaçada</option>
+            <option value="Pouco Preocupante">Pouco Preocupante</option>
+            <option value="Superpopulação">Superpopulação</option>
+          </select>
+        </div>
+        <div>
+          <label for="sortSelect" class="block text-sm font-medium mb-1">Ordenar por</label>
+          <select id="sortSelect" class="w-full px-4 py-3 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+            <option value="name">Nome (A→Z)</option>
+            <option value="risk">Risco (maior→menor)</option>
+            <option value="recent">Mais recentes</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Species Grid -->
+    <div class="container mx-auto px-0 pb-8">
+      <div id="speciesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" aria-live="polite"></div>
+    </div>
+  </main>
+
+  </div><!-- /.site-content -->
+
+  <!-- Species Detail Modal -->
+  <div id="speciesModal" class="fixed inset-0 bg-black/50 hidden z-50 overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="flex items-center justify-center min-h-screen p-4">
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-4xl w-full mx-4 max-h-screen overflow-y-auto" data-focus-trap>
+        <div class="p-6">
+          <!-- Modal Header -->
+          <div class="flex justify-between items-start mb-6">
+            <div class="flex items-center space-x-4">
+              <img id="modalImage" src="" alt="Imagem da espécie" class="w-20 h-20 rounded-full object-cover" loading="lazy" decoding="async" />
+              <div>
+                <h2 id="modalTitle" class="text-2xl font-bold text-gray-900 dark:text-white"></h2>
+                <p id="modalScientificName" class="text-gray-600 dark:text-gray-400 italic"></p>
+                <div id="modalRiskBadge" class="mt-2"></div>
+              </div>
+            </div>
+            <div class="flex space-x-2">
+              <button id="playAudioBtn" class="p-2 bg-primary text-white rounded-lg hover:bg-opacity-80 transition-colors" title="Reproduzir áudio"><i class="fas fa-play"></i></button>
+              <button id="editSpeciesBtn" class="p-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors flex items-center" title="Editar esta espécie">
+                <i class="fas fa-edit mr-1"></i>
+                <span class="hidden md:inline">Editar</span>
+              </button>
+              <button id="deleteSpeciesBtn" class="p-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center" title="Excluir esta espécie">
+                <i class="fas fa-trash mr-1"></i>
+                <span class="hidden md:inline">Excluir</span>
+              </button>
+              <button id="closeModal" class="p-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors flex items-center" title="Fechar modal de detalhes">
+                <i class="fas fa-times mr-1"></i>
+                <span class="hidden md:inline">Fechar</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Audio Player -->
+          <div id="audioSection" class="mb-6 hidden">
+            <div class="flex items-center gap-2">
+              <audio id="audioPlayer" controls class="w-full">
+                <source id="audioSource" src="" type="audio/mpeg" />
+                Seu navegador não suporta o elemento de áudio.
+              </audio>
+              <button id="pauseAudioBtn" class="p-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition-colors" title="Pausar áudio"><i class="fas fa-pause"></i></button>
+              <button id="resumeAudioBtn" class="p-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors" title="Retomar áudio"><i class="fas fa-play"></i></button>
+            </div>
+          </div>
+
+          <!-- Tabs -->
+          <div class="border-b border-gray-200 dark:border-gray-700 mb-6">
+            <nav class="flex flex-wrap gap-2" id="tabsNav">
+              <button class="tab-btn active py-2 px-3 border-b-2 border-primary text-primary font-medium" data-tab="caracteristicas">Características</button>
+              <button class="tab-btn py-2 px-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 font-medium" data-tab="localizacao">Localização</button>
+              <button class="tab-btn py-2 px-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 font-medium" data-tab="habitat">Habitat</button>
+              <button class="tab-btn py-2 px-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 font-medium" data-tab="alimentacao">Alimentação</button>
+              <button class="tab-btn py-2 px-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 font-medium" data-tab="risco">Risco de Extinção</button>
+              <button class="tab-btn py-2 px-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 font-medium" data-tab="nicho">Nicho Ecológico</button>
+            </nav>
+          </div>
+
+          <!-- Tab Content -->
+          <div id="tabContent" class="min-h-48"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add/Edit Species Modal -->
+  <div id="editModal" class="fixed inset-0 bg-black/50 hidden z-50 overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="editModalTitle">
+    <div class="flex items-center justify-center min-h-screen p-4">
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-2xl w-full mx-4 max-h-screen overflow-y-auto" data-focus-trap>
+        <div class="p-6">
+          <div class="flex justify-between items-center mb-6">
+            <h2 id="editModalTitle" class="text-2xl font-bold text-gray-900 dark:text-white">Adicionar Espécie</h2>
+            <button id="closeEditModal" class="p-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors" title="Fechar"><i class="fas fa-times"></i></button>
+          </div>
+
+          <form id="speciesForm" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium mb-2" for="formName">Nome Popular *</label>
+                <input type="text" id="formName" required class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-2" for="formScientificName">Nome Científico *</label>
+                <input type="text" id="formScientificName" required class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium mb-2" for="formRisk">Risco de Extinção *</label>
+              <select id="formRisk" required class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                <option value="">Selecione o nível de risco</option>
+                <option value="Criticamente em Perigo">Criticamente em Perigo</option>
+                <option value="Em Perigo">Em Perigo</option>
+                <option value="Vulnerável">Vulnerável</option>
+                <option value="Quase Ameaçada">Quase Ameaçada</option>
+                <option value="Pouco Preocupante">Pouco Preocupante</option>
+                <option value="Superpopulação">Superpopulação</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium mb-2" for="formImage">Imagem</label>
+                <input type="file" id="formImage" accept="image/*" class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-2" for="formAudio">Áudio Descritivo</label>
+                <input type="file" id="formAudio" accept="audio/*" class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-white" />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium mb-2" for="formCharacteristics">Características</label>
+              <textarea id="formCharacteristics" rows="3" placeholder="Descreva as características físicas da espécie..." class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-white"></textarea>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium mb-2" for="formLocation">Localização</label>
+              <textarea id="formLocation" rows="3" placeholder="Onde a espécie pode ser encontrada no Brasil..." class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-white"></textarea>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium mb-2" for="formHabitat">Habitat</label>
+              <textarea id="formHabitat" rows="3" placeholder="Descreva o ambiente onde a espécie vive..." class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-white"></textarea>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium mb-2" for="formDiet">Alimentação</label>
+              <textarea id="formDiet" rows="3" placeholder="Do que a espécie se alimenta..." class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-white"></textarea>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium mb-2" for="formRiskDetails">Detalhes do Risco de Extinção</label>
+              <textarea id="formRiskDetails" rows="3" placeholder="Principais ameaças e fatores de risco..." class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-white"></textarea>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium mb-2" for="formEcologicalRole">Nicho Ecológico</label>
+              <textarea id="formEcologicalRole" rows="3" placeholder="Papel da espécie no ecossistema..." class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-white"></textarea>
+            </div>
+
+            <div class="flex justify-between items-center pt-4">
+              <button type="button" id="cancelEdit" class="px-6 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">Cancelar</button>
+              <button type="submit" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-opacity-80 transition-colors">Salvar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <input id="importInput" type="file" accept="application/json" class="hidden" />
+
+  <!-- About / Quem somos Modal -->
+  <div id="aboutModal" class="fixed inset-0 bg-black/50 hidden z-50">
+    <div class="w-full h-full">
+      <div class="bg-white/90 dark:bg-gray-800/90 w-full h-full rounded-none shadow-2xl overflow-y-auto">
+        <div class="flex items-center justify-between p-6 border-b border-white/30 dark:border-white/10">
+          <h2 class="text-xl font-semibold">Quem somos?</h2>
+          <div class="flex items-center gap-2">
+            <button id="editAboutBtn" class="px-3 py-1.5 text-sm rounded-lg bg-ocean-600 text-white hover:bg-ocean-700">Editar</button>
+            <button id="saveAboutBtn" class="px-3 py-1.5 text-sm rounded-lg bg-primary text-white hover:bg-ocean-700 hidden">Salvar</button>
+            <button id="closeAboutBtnText" class="px-3 py-1.5 text-sm rounded-lg bg-white/30 text-gray-900 dark:text-white hover:bg-white/40 border border-white/40">Fechar</button>
+            <button id="closeAboutBtn" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300" title="Fechar">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+        <div class="p-6 space-y-4">
+          <div id="aboutContent" class="prose max-w-none leading-relaxed">
+            <p><strong>AQUAVAULT</strong> é um projeto dedicado a tornar acessível o conhecimento sobre espécies marinhas brasileiras, promovendo educação, conservação e curiosidade científica.</p>
+            <p>Use o botão Editar para personalizar este conteúdo. Ele é salvo localmente no seu navegador e pode ser alterado a qualquer momento.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating GitHub Settings Button -->
+  <button id="githubSettingsBtn" title="Configurar GitHub" aria-label="Configurar GitHub"
+          class="fixed bottom-6 right-6 z-40 rounded-full shadow-lg bg-ocean-600 hover:bg-ocean-700 text-white w-12 h-12 flex items-center justify-center">
+    <i class="fas fa-cog"></i>
+  </button>
+
+  <!-- GitHub Settings Modal -->
+  <div id="githubSettingsModal" class="fixed inset-0 bg-black/50 hidden z-50">
+    <div class="container mx-auto px-4 py-10">
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg max-w-xl mx-auto">
+        <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+          <h2 class="text-xl font-semibold">Configurações do GitHub</h2>
+          <button id="closeGithubSettings" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300" title="Fechar">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="p-6 space-y-4" data-focus-trap>
+          <div>
+            <label class="block text-sm font-medium mb-1" for="ghOwner">Owner</label>
+            <input id="ghOwner" type="text" class="w-full px-3 py-2 border rounded-lg bg-white dark:bg-gray-700" placeholder="ex: RCCxd" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1" for="ghRepo">Repo</label>
+            <input id="ghRepo" type="text" class="w-full px-3 py-2 border rounded-lg bg-white dark:bg-gray-700" placeholder="ex: imagensvault" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1" for="ghBranch">Branch</label>
+            <input id="ghBranch" type="text" class="w-full px-3 py-2 border rounded-lg bg-white dark:bg-gray-700" placeholder="ex: main" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1" for="ghToken">Token (PAT)</label>
+            <input id="ghToken" type="password" class="w-full px-3 py-2 border rounded-lg bg-white dark:bg-gray-700" placeholder="ghp_..." />
+            <p class="text-xs text-gray-500 mt-1">O token é salvo localmente (localStorage). Permissões: repo:contents.</p>
+          </div>
+          <div class="pt-2 border-t border-gray-200 dark:border-gray-700"></div>
+          <div>
+            <label class="block text-sm font-medium mb-2" for="ghLogoFile">Upload do Logo</label>
+            <input id="ghLogoFile" type="file" accept="image/*" class="w-full px-3 py-2 border rounded-lg bg-white dark:bg-gray-700" />
+            <p class="text-xs text-gray-500 mt-1">O arquivo será salvo como <code>logo.png</code> no repositório.</p>
+            <div class="flex justify-end mt-3">
+              <button id="uploadLogoBtn" class="px-4 py-2 bg-primary text-white rounded-lg">Enviar Logo</button>
+            </div>
+          </div>
+          <div class="flex justify-end gap-2 pt-4">
+            <button id="saveGithubSettings" class="px-4 py-2 bg-ocean-600 text-white rounded-lg">Salvar Configurações</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="js/script.js"></script>
+</body>
+</html>
